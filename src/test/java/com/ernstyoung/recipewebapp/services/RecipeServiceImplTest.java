@@ -1,5 +1,6 @@
 package com.ernstyoung.recipewebapp.services;
 
+import com.ernstyoung.recipewebapp.exceptions.NotFoundException;
 import com.ernstyoung.recipewebapp.models.Recipe;
 import com.ernstyoung.recipewebapp.repositories.RecipeRepository;
 import org.junit.Before;
@@ -22,15 +23,23 @@ public class RecipeServiceImplTest {
     RecipeRepository recipeRepository;
 
     @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.openMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+    public void setUp() {
+            MockitoAnnotations.openMocks(this);
+            recipeService = new RecipeServiceImpl(recipeRepository);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void getRecipeByIdNotFound() {
+        Optional<Recipe> recipe = Optional.empty();
+        when(recipeRepository.findById(anyLong())).thenReturn(recipe);
+        Recipe recipeReturned = recipeService.getRecipeById(1L);
+
     }
 
     @Test
     public void getRecipes() {
         Recipe recipe1 = new Recipe();
-        HashSet recipeData = new HashSet();
+        Set<Recipe> recipeData = new HashSet<>();
         recipeData.add(recipe1);
 
         when(recipeRepository.findAll()).thenReturn(recipeData);
@@ -50,5 +59,11 @@ public class RecipeServiceImplTest {
         Recipe recipeReturned = recipeService.getRecipeById(1L);
         assertNotNull(recipeReturned);
         verify(recipeRepository, times(1)).findById(anyLong());
+    }
+
+    @Test
+    public void deleteRecipeById() {
+        recipeService.deleteRecipeById(1L);
+        verify(recipeRepository, times(1)).deleteById(anyLong());
     }
 }
