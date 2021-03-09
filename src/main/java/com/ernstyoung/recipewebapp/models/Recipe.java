@@ -1,7 +1,9 @@
 package com.ernstyoung.recipewebapp.models;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.URL;
 
+import javax.validation.constraints.*;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -14,14 +16,28 @@ public class Recipe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
+    @Size(min = 3, max = 255)
     private String description;
+
+    @Min(1)
+    @Max(999)
     private Integer prepTime;
+
+    @Min(1)
+    @Max(999)
     private Integer cookTime;
+
+    @Min(1)
+    @Max(100)
     private Integer servings;
     private String source;
+
+    @URL
     private String url;
 
     @Lob
+    @NotBlank
     private String directions;
 
     @Enumerated(value = EnumType.STRING)
