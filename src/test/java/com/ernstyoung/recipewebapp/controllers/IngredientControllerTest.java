@@ -43,7 +43,7 @@ public class IngredientControllerTest {
         Recipe recipe = new Recipe();
         recipe.setId(1L);
         when(recipeService.getRecipeById(anyLong())).thenReturn(recipe);
-        mockMvc.perform(get("/recipe/1/ingredients"))
+        mockMvc.perform(get("/recipe/1/ingredient"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("recipe/ingredient/list"))
                 .andExpect(model().attribute("recipe", instanceOf(Recipe.class)));

@@ -3,6 +3,7 @@ package com.ernstyoung.recipewebapp.controllers;
 import com.ernstyoung.recipewebapp.exceptions.NotFoundException;
 import com.ernstyoung.recipewebapp.models.Recipe;
 import com.ernstyoung.recipewebapp.services.RecipeService;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -27,7 +28,9 @@ public class RecipeControllerTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         recipeController = new RecipeController(recipeService);
-        mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(recipeController)
+                .setControllerAdvice(new ControllerExceptionHandler())
+                .build();
     }
 
     @Test
