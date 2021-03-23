@@ -45,7 +45,7 @@
                                 </ul>
                             </div>
                             <div class="col-md-6">
-                                <img src=" ../../static/images/guacamole400x400.jpg"
+                                <img alt="Guacamole" src=" ../../static/images/guacamole400x400.jpg"
                                      th:src="@{/images/guacamole400x400.jpg}"
                                      width="200" height="200">
                             </div>
@@ -96,7 +96,14 @@
                 </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h1 class="panel-title">Ingredients</h1>
+                        <div class="row">
+                            <div class="col-md-11">
+                                <h1 class="panel-title">Ingredients</h1>
+                            </div>
+                            <div class="col-md-1">
+                                <a class="btn btn-default" th:href="@{'/recipe/' + ${recipe.getId()} + '/ingredient'}" role="button">View</a>
+                            </div>
+                        </div>
                     </div>
                     <div class="panel-body">
                         <div class="row">

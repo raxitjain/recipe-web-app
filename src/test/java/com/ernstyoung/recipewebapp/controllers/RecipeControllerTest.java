@@ -21,6 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class RecipeControllerTest {
 
+    private final static String RECIPE_FORM_URL = "recipe/recipeform";
     RecipeController recipeController;
     MockMvc mockMvc;
 
@@ -69,7 +70,7 @@ public class RecipeControllerTest {
         when(recipeService.getRecipeById(anyLong())).thenReturn(recipe);
         mockMvc.perform(get("/recipe/1/update"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("recipe/recipeform"));
+                .andExpect(view().name(RECIPE_FORM_URL));
     }
 
     @Test
@@ -83,7 +84,7 @@ public class RecipeControllerTest {
     }
 
     @Test
-    public void testPostNewRecipeFormValidation() throws Exception {
+    public void postNewRecipeFormValidation() throws Exception {
         Recipe recipe = new Recipe();
         recipe.setId(1L);
         when(recipeService.saveRecipe(any())).thenReturn(recipe);
@@ -95,5 +96,17 @@ public class RecipeControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(model().attributeExists("recipe"))
                 .andExpect(view().name("redirect:/recipe/show/1"));
+    }
+
+    @Test
+    public void postNewRecipeFormValidationFail() throws Exception {
+        Recipe recipe = new Recipe();
+        recipe.setId(1L);
+        when(recipeService.saveRecipe(any())).thenReturn(recipe);
+        mockMvc.perform(post("/recipe/add")
+                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                .param("id", ""))
+                .andExpect(status().isOk())
+                .andExpect(view().name(RECIPE_FORM_URL));
     }
 }
